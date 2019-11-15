@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 15 Novembre 2019 à 10:32
+-- Généré le :  Ven 15 Novembre 2019 à 10:51
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -33,6 +33,30 @@ CREATE TABLE `game_account` (
   `account_pass` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_language`
+--
+
+CREATE TABLE `game_language` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(32) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_language_content`
+--
+
+CREATE TABLE `game_language_content` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `lang_id` int(10) UNSIGNED NOT NULL,
+  `str_key` varchar(64) NOT NULL,
+  `content` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Index pour les tables exportées
 --
@@ -44,6 +68,20 @@ ALTER TABLE `game_account`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `game_language`
+--
+ALTER TABLE `game_language`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `game_language_content`
+--
+ALTER TABLE `game_language_content`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lang_id` (`lang_id`),
+  ADD KEY `str_key` (`str_key`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -51,6 +89,16 @@ ALTER TABLE `game_account`
 -- AUTO_INCREMENT pour la table `game_account`
 --
 ALTER TABLE `game_account`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_language`
+--
+ALTER TABLE `game_language`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_language_content`
+--
+ALTER TABLE `game_language_content`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
