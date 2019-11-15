@@ -14,3 +14,5 @@ Database for StarShipNeo
 | game_ship | Ship information | type_id == game_ship_type.id, user_id == game_account.id, coord_id == game_coord.id |
 | game_ship_baycontent | Content of cargo bay of ships (several lines for one ship) | object_id == game_object.id, ship_id == game_ship.id |
 | game_ship_type | Known ship types | / |
+| game_station | Station information | type_id == game_station_type.id |
+| game_station_type | Known station types | / |

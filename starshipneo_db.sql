@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 15 Novembre 2019 à 13:04
+-- Généré le :  Ven 15 Novembre 2019 à 14:19
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -163,6 +163,33 @@ CREATE TABLE `game_ship_type` (
   `timestamp` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_station`
+--
+
+CREATE TABLE `game_station` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `type_id` int(10) UNSIGNED NOT NULL,
+  `coord_id` int(10) UNSIGNED NOT NULL,
+  `docking_options` int(10) UNSIGNED NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_station_type`
+--
+
+CREATE TABLE `game_station_type` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Index pour les tables exportées
 --
@@ -235,6 +262,19 @@ ALTER TABLE `game_ship_type`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `game_station`
+--
+ALTER TABLE `game_station`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `station_type` (`type_id`);
+
+--
+-- Index pour la table `game_station_type`
+--
+ALTER TABLE `game_station_type`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT pour les tables exportées
 --
 
@@ -287,6 +327,16 @@ ALTER TABLE `game_ship_baycontent`
 -- AUTO_INCREMENT pour la table `game_ship_type`
 --
 ALTER TABLE `game_ship_type`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_station`
+--
+ALTER TABLE `game_station`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_station_type`
+--
+ALTER TABLE `game_station_type`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
