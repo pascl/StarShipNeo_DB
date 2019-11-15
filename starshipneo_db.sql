@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 15 Novembre 2019 à 14:19
+-- Généré le :  Ven 15 Novembre 2019 à 17:53
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -36,6 +36,19 @@ CREATE TABLE `game_account` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `game_align`
+--
+
+CREATE TABLE `game_align` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `short_name` varchar(6) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `game_coord`
 --
 
@@ -45,6 +58,20 @@ CREATE TABLE `game_coord` (
   `coordy` smallint(5) NOT NULL,
   `coordz` smallint(5) NOT NULL,
   `sector_id` int(10) UNSIGNED NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_debris`
+--
+
+CREATE TABLE `game_debris` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `object_id` int(10) UNSIGNED NOT NULL,
+  `coord_id` int(10) UNSIGNED NOT NULL,
+  `quantity` int(10) UNSIGNED NOT NULL,
   `timestamp` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -77,6 +104,55 @@ CREATE TABLE `game_language_content` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `game_message`
+--
+
+CREATE TABLE `game_message` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `title` varchar(96) NOT NULL,
+  `content` text NOT NULL,
+  `author_id` int(10) UNSIGNED NOT NULL,
+  `dest_guild` text NOT NULL,
+  `dest_user` text NOT NULL,
+  `type_id` tinyint(1) UNSIGNED NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_message_dest`
+--
+
+CREATE TABLE `game_message_dest` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `message_id` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `message_options` tinyint(1) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_mission`
+--
+
+CREATE TABLE `game_mission` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `start_station_id` int(10) UNSIGNED NOT NULL,
+  `object_id` int(10) UNSIGNED NOT NULL,
+  `end_station_id` int(10) UNSIGNED NOT NULL,
+  `quantity` int(10) UNSIGNED NOT NULL,
+  `bounty_value` int(10) UNSIGNED NOT NULL,
+  `bounty_time` int(10) UNSIGNED NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL,
+  `timestamp_taken` int(10) UNSIGNED NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `game_object`
 --
 
@@ -99,6 +175,18 @@ CREATE TABLE `game_object_type` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL,
   `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_random_firstname`
+--
+
+CREATE TABLE `game_random_firstname` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `firstname` varchar(32) NOT NULL,
+  `gender` tinyint(1) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -154,12 +242,52 @@ CREATE TABLE `game_ship_baycontent` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `game_ship_slotcontent`
+--
+
+CREATE TABLE `game_ship_slotcontent` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `slot_id` int(10) UNSIGNED NOT NULL,
+  `ship_id` int(10) UNSIGNED NOT NULL,
+  `level` int(10) UNSIGNED NOT NULL,
+  `object_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `game_ship_type`
 --
 
 CREATE TABLE `game_ship_type` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_slot`
+--
+
+CREATE TABLE `game_slot` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(32) NOT NULL,
+  `type_id` int(10) UNSIGNED NOT NULL,
+  `appear` int(10) UNSIGNED NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `game_slot_type`
+--
+
+CREATE TABLE `game_slot_type` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(32) NOT NULL,
   `timestamp` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -201,10 +329,23 @@ ALTER TABLE `game_account`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `game_align`
+--
+ALTER TABLE `game_align`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `game_coord`
 --
 ALTER TABLE `game_coord`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `game_debris`
+--
+ALTER TABLE `game_debris`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `object_id` (`object_id`);
 
 --
 -- Index pour la table `game_language`
@@ -221,6 +362,30 @@ ALTER TABLE `game_language_content`
   ADD KEY `str_key` (`str_key`);
 
 --
+-- Index pour la table `game_message`
+--
+ALTER TABLE `game_message`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author_id` (`author_id`),
+  ADD KEY `message_options` (`type_id`);
+
+--
+-- Index pour la table `game_message_dest`
+--
+ALTER TABLE `game_message_dest`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `game_mission`
+--
+ALTER TABLE `game_mission`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `start_station_id` (`start_station_id`),
+  ADD KEY `end_station_id` (`end_station_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Index pour la table `game_object`
 --
 ALTER TABLE `game_object`
@@ -231,6 +396,12 @@ ALTER TABLE `game_object`
 -- Index pour la table `game_object_type`
 --
 ALTER TABLE `game_object_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `game_random_firstname`
+--
+ALTER TABLE `game_random_firstname`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -256,9 +427,31 @@ ALTER TABLE `game_ship_baycontent`
   ADD KEY `ship_id` (`ship_id`);
 
 --
+-- Index pour la table `game_ship_slotcontent`
+--
+ALTER TABLE `game_ship_slotcontent`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `slot_id` (`slot_id`),
+  ADD KEY `ship_id` (`ship_id`);
+
+--
 -- Index pour la table `game_ship_type`
 --
 ALTER TABLE `game_ship_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `game_slot`
+--
+ALTER TABLE `game_slot`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `slot_type` (`type_id`),
+  ADD KEY `appear` (`appear`);
+
+--
+-- Index pour la table `game_slot_type`
+--
+ALTER TABLE `game_slot_type`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -284,9 +477,19 @@ ALTER TABLE `game_station_type`
 ALTER TABLE `game_account`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT pour la table `game_align`
+--
+ALTER TABLE `game_align`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `game_coord`
 --
 ALTER TABLE `game_coord`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_debris`
+--
+ALTER TABLE `game_debris`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `game_language`
@@ -299,6 +502,21 @@ ALTER TABLE `game_language`
 ALTER TABLE `game_language_content`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT pour la table `game_message`
+--
+ALTER TABLE `game_message`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_message_dest`
+--
+ALTER TABLE `game_message_dest`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_mission`
+--
+ALTER TABLE `game_mission`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `game_object`
 --
 ALTER TABLE `game_object`
@@ -307,6 +525,11 @@ ALTER TABLE `game_object`
 -- AUTO_INCREMENT pour la table `game_object_type`
 --
 ALTER TABLE `game_object_type`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_random_firstname`
+--
+ALTER TABLE `game_random_firstname`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `game_sector`
@@ -324,9 +547,24 @@ ALTER TABLE `game_ship`
 ALTER TABLE `game_ship_baycontent`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT pour la table `game_ship_slotcontent`
+--
+ALTER TABLE `game_ship_slotcontent`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT pour la table `game_ship_type`
 --
 ALTER TABLE `game_ship_type`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_slot`
+--
+ALTER TABLE `game_slot`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT pour la table `game_slot_type`
+--
+ALTER TABLE `game_slot_type`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `game_station`
