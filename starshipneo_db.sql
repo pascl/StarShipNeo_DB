@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Ven 15 Novembre 2019 à 10:51
+-- Généré le :  Ven 15 Novembre 2019 à 11:02
 -- Version du serveur :  5.7.11
 -- Version de PHP :  5.6.18
 
@@ -54,7 +54,8 @@ CREATE TABLE `game_language_content` (
   `id` int(10) UNSIGNED NOT NULL,
   `lang_id` int(10) UNSIGNED NOT NULL,
   `str_key` varchar(64) NOT NULL,
-  `content` varchar(255) NOT NULL
+  `content` varchar(255) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
